@@ -3,13 +3,19 @@ import { BsPersonCircle, BsCart3, BsFillCartFill } from "react-icons/bs";
 import { BiHelpCircle } from "react-icons/bi";
 import { useCallback, useState } from "react";
 import Button from "../Button";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 const UserMenu = () => {
+  const registarModal = useRegisterModal();
   const [activeItem, setActiveItem] = useState("");
-  const toggleOpen = (value: string) => {
-    if (activeItem === value) setActiveItem("");
-    else setActiveItem(value);
-  };
+  const toggleOpen = useCallback(
+    (value: string) => {
+      if (activeItem === value) setActiveItem("");
+      else setActiveItem(value);
+    },
+    [activeItem]
+  );
+
   return (
     <div className="flex gap-3 items-center ">
       <div className="relative">
@@ -17,24 +23,28 @@ const UserMenu = () => {
           title="Account"
           icon={BsPersonCircle}
           arrow={true}
-          isActive={activeItem === "account"}
-          isClick={() => toggleOpen("account")}
+          secondary={activeItem === "account"}
+          onClick={() => toggleOpen("account")}
         />
         {activeItem === "account" ? (
           <div className="flex flex-col gap-2 absolute right-0 md:left-0 top-12 bg-white p-4 w-[15rem] rounded-md shadow-md">
-            <Button title="Sign In" isClick={() => {}} primary={true} />
+            <Button
+              title="Sign In"
+              onClick={registarModal.onOpen}
+              primary={true}
+            />
             <Button
               title="My Account"
               icon={BsPersonCircle}
-              isClick={() => toggleOpen("")}
+              onClick={() => toggleOpen("")}
             />
             <Button
-              isClick={() => toggleOpen}
+              onClick={() => toggleOpen}
               title="Orders"
               icon={BsFillCartFill}
             />
             <Button
-              isClick={() => toggleOpen}
+              onClick={() => toggleOpen}
               title="Saved Items"
               icon={BsPersonCircle}
             />
@@ -46,18 +56,18 @@ const UserMenu = () => {
       <div className="relative hidden md:block">
         <Button
           title="Help"
-          isClick={() => toggleOpen("help")}
+          onClick={() => toggleOpen("help")}
           icon={BiHelpCircle}
           arrow={true}
-          isActive={activeItem === "help"}
+          secondary={activeItem === "help"}
         />
       </div>
       <div className="relative hidden md:block">
         <Button
           title="Cart"
-          isClick={() => toggleOpen("cart")}
+          onClick={() => toggleOpen("cart")}
           icon={BsCart3}
-          isActive={activeItem === "cart"}
+          secondary={activeItem === "cart"}
         />
       </div>
     </div>
