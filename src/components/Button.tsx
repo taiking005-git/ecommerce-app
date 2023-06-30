@@ -13,6 +13,7 @@ interface ButtonProps {
   disable?: boolean;
   outline?: boolean;
   small?: boolean;
+  light?: boolean;
 }
 const Button: React.FC<ButtonProps> = ({
   onClick,
@@ -24,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   outline,
   small,
   secondary,
+  light,
 }) => {
   return (
     <button
@@ -43,6 +45,11 @@ const Button: React.FC<ButtonProps> = ({
         }
         ${outline ? "w-full items-center justify-center " : ""}
         ${small ? "p-1 gap-1 font-light" : "gap-2 p-2"}
+        ${
+          light
+            ? "bg-white border-black border-2 text-black justify-between"
+            : ""
+        }
         
       `}
     >

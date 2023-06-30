@@ -2,9 +2,13 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 const Logo = () => {
   const router = useRouter();
+  const notify = () => {
+    toast.success("Welcome");
+  };
   return (
     // <Image
     //   className="hidden md:block cursor-pointer "
@@ -13,7 +17,7 @@ const Logo = () => {
     //   width={50}
     //   src="/"
     // />
-    <h1>Logo</h1>
+    <h1 onClick={notify}>Logo</h1>
   );
 };
 

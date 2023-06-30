@@ -1,12 +1,26 @@
 "use client";
-import { BsPersonCircle, BsCart3, BsFillCartFill } from "react-icons/bs";
+import {
+  BsPersonCircle,
+  BsCart3,
+  BsFillCartFill,
+  BsFillHeartFill,
+  BsPersonFillCheck,
+} from "react-icons/bs";
 import { BiHelpCircle } from "react-icons/bi";
 import { useCallback, useState } from "react";
 import Button from "../Button";
-import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useRegisterModal from "@/hooks/useRegisterModal";
+import useLoginModal from "@/hooks/useLoginModal";
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
 
-const UserMenu = () => {
+interface UserMenuProps {
+  currentUser: User | null;
+}
+
+const UserMenu = ({ currentUser }: UserMenuProps) => {
   const registarModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [activeItem, setActiveItem] = useState("");
   const toggleOpen = useCallback(
     (value: string) => {
@@ -16,38 +30,44 @@ const UserMenu = () => {
     [activeItem]
   );
 
+  const handleSignIn = () => {
+    loginModal.onOpen();
+    toggleOpen("");
+  };
+
   return (
     <div className="flex gap-3 items-center ">
       <div className="relative">
         <Button
-          title="Account"
-          icon={BsPersonCircle}
+          title={`${currentUser ? "Hi, " + currentUser.name : "Account"}`}
+          icon={currentUser ? BsPersonFillCheck : BsPersonCircle}
           arrow={true}
           secondary={activeItem === "account"}
           onClick={() => toggleOpen("account")}
         />
         {activeItem === "account" ? (
           <div className="flex flex-col gap-2 absolute right-0 md:left-0 top-12 bg-white p-4 w-[15rem] rounded-md shadow-md">
-            <Button
-              title="Sign In"
-              onClick={registarModal.onOpen}
-              primary={true}
-            />
+            {!currentUser && (
+              <Button title="Sign In" onClick={handleSignIn} primary />
+            )}
             <Button
               title="My Account"
               icon={BsPersonCircle}
               onClick={() => toggleOpen("")}
             />
             <Button
-              onClick={() => toggleOpen}
+              onClick={() => toggleOpen("")}
               title="Orders"
               icon={BsFillCartFill}
             />
             <Button
-              onClick={() => toggleOpen}
+              onClick={() => toggleOpen("")}
               title="Saved Items"
-              icon={BsPersonCircle}
+              icon={BsFillHeartFill}
             />
+            {currentUser && (
+              <Button title="Log Out" onClick={() => signOut()} primary />
+            )}{" "}
           </div>
         ) : (
           ""

@@ -1,15 +1,20 @@
 "use client";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useRegisterModal from "@/hooks/useRegisterModal";
 import Modal from "./Modal";
 import Heading from "../heading/Heading";
 import Input from "../input/Input";
+import toast from "react-hot-toast";
+import Button from "../Button";
+import useLoginModal from "@/hooks/useLoginModal";
 
 const RegistarModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -26,20 +31,19 @@ const RegistarModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-
     axios
       .post("/api/register", data)
       .then(() => {
         registerModal.onClose();
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("Something went wrong. Please try again");
       })
       .finally(() => setIsLoading(false));
   };
 
   const bodyContent = (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       <Heading
         title="Welcome to ecommerce"
         subtitle="Create an account!"
@@ -73,10 +77,42 @@ const RegistarModal = () => {
     </div>
   );
 
+  const footerContent = (
+    <div className="flex flex-col gap-4 mt-3">
+      <hr />
+      <Button
+        secondary
+        light
+        outline
+        onClick={() => {}}
+        title="Continue with Google"
+        icon={FcGoogle}
+      />
+      <Button
+        secondary
+        light
+        outline
+        onClick={() => {}}
+        title="Continue with Facebook"
+        icon={FaFacebook}
+      />
+      <span>
+        Already have an account?{" "}
+        <span
+          onClick={loginModal.onOpen}
+          className="cursor-pointer hover:underline"
+        >
+          Log In
+        </span>
+      </span>
+    </div>
+  );
+
   return (
     <div>
       <Modal
         body={bodyContent}
+        footer={footerContent}
         disabled={isLoading}
         isOpen={registerModal.isOpen}
         onClose={registerModal.onClose}
