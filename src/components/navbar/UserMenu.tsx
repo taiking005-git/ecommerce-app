@@ -11,14 +11,10 @@ import { useCallback, useState } from "react";
 import Button from "../Button";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import useLoginModal from "@/hooks/useLoginModal";
-import { User } from "@prisma/client";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import { UsersProps } from "../../../types";
 
-interface UserMenuProps {
-  currentUser: User | null;
-}
-
-const UserMenu = ({ currentUser }: UserMenuProps) => {
+const UserMenu = ({ currentUser }: UsersProps) => {
   const registarModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [activeItem, setActiveItem] = useState("");

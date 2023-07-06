@@ -80,7 +80,7 @@ const LoginModal = () => {
         secondary
         light
         outline
-        onClick={() => {}}
+        onClick={() => signIn("google")}
         title="Continue with Google"
         icon={FcGoogle}
       />
@@ -88,7 +88,7 @@ const LoginModal = () => {
         secondary
         light
         outline
-        onClick={() => {}}
+        onClick={() => signIn("facebook")}
         title="Continue with Facebook"
         icon={FaFacebook}
       />
