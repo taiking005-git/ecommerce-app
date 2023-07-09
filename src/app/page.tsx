@@ -7,8 +7,8 @@ export default function Home() {
     <Container>
       <main className="py-20 w-full flex flex-col gap-4 ">
         <HeroIndex />
-        <ProductsCard flashSale />
-        <ProductsCard title="Best Gadget"/>
+        <ProductsCard flashSale={true} />
+        <ProductsCard flashSale={false} title="Best Gadget"/>
       </main>
     </Container>
   );
